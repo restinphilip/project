@@ -1,6 +1,10 @@
 pipeline {
-    agent any
-
+    agent {
+        node {
+            label 'built-in'      
+            customWorkspace '/mnt/scp-mvn'
+        }
+    }
     tools {
         maven 'apache-maven-3.9.11'
     }
