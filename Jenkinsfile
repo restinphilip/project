@@ -1,47 +1,30 @@
-//jqglqngl
 pipeline {
-agent {
-label {
-		label "built-in-project"
-		customWorkspace "/data/project-myapp"
-		
-		}
-		}
-		
-	stages {
-		
-		stage ('CLEAN_OLD_M2') {
-			
-			steps {
-				sh "rm -rf /home/saccount/.m2/repository"
-				
-			}
-			
-		}
-	
-		stage ('MAVEN_BUILD') {
-		
-			steps {
-						
-						sh "mvn clean package"
-			
-			}
-			
-		
-		}
-		
-		stage ('COPY_WAR_TO_Server'){
-		
-				steps {
-						
-						sh "scp -r target/LoginWebApp.war saccount@10.0.2.51:/data/project/wars"
+    agent any
 
-						}
-				
-				}
-	
-	
-	
-	}
-		
+    stages {
+        stage('clean-repo') {
+            steps {
+                sh '''
+                    rm -rf /root/.m2/repository/
+                    rm -rf /mnt/servers/apache-tomcat-10.1.48/webapps/LoginWebApp*
+                '''
+            }
+        }
+
+        stage('clean-mvn-package') {
+            steps {
+                sh '''
+                    mvn clean package
+                '''
+            }
+        }
+
+        stage('cpy-remote-ec2') {
+            steps {
+                sh '''
+                    scp -i /root/mkey.pem target/LoginWebApp.war ec2-user@ec2-3-110-189-101.ap-south-1.compute.amazonaws.com:/mnt/servers/apache-tomcat-10.1.48/webapps/ 
+                '''
+            }
+        }
+    }
 }
