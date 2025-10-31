@@ -1,8 +1,10 @@
 pipeline {
     agent {
-            label 'qa'      
-            customWorkspace '/mnt/project'
-    }
+           node {
+        label 'qa'
+        customWorkspace '/mnt/project'
+                 }
+          }
     tools {
         maven 'apache-maven-3.9.11'
           }
