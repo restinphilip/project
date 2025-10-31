@@ -28,7 +28,7 @@ pipeline {
         stage('clean-mvn-package') {
             steps {
                 sh '''
-                   sudo mvn clean package
+                   mvn clean package
                 '''
             }
         }
