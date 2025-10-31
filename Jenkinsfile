@@ -12,7 +12,6 @@ pipeline {
         stage('clean-repo') {
             steps {
                sh '''
-                   //rm -rf /root/.m2/repository/
                     rm -rf /mnt/servers/apache-tomcat-10.1.48/webapps/LoginWebApp*
                 '''
             }
