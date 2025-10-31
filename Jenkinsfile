@@ -2,7 +2,6 @@ pipeline {
     agent {
            node {
         label 'qa'
-        customWorkspace '/mnt/project'
                  }
           }
     tools {
