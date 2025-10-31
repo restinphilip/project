@@ -9,13 +9,6 @@ pipeline {
           }
 
     stages {
-        stage('clean-wsp-before-build') {
-            steps {
-                sh '''
-                    sudo rm -rf *
-                '''
-            }
-        }
         stage('clean-repo') {
             steps {
                sh '''
