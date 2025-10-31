@@ -9,10 +9,18 @@ pipeline {
           }
 
     stages {
+        stage('clean-wsp-before-build') {
+            steps {
+                sh '''
+                    sudo rm -rf *
+                '''
+            }
+        }
         stage('clean-repo') {
             steps {
                sh '''
-                    rm -rf /mnt/servers/apache-tomcat-10.1.48/webapps/LoginWebApp*
+                  sudo rm -rf /root/.m2/repository/*
+                  sudo rm -rf /mnt/servers/apache-tomcat-10.1.48/webapps/LoginWebApp*
                 '''
             }
         }
@@ -20,7 +28,7 @@ pipeline {
         stage('clean-mvn-package') {
             steps {
                 sh '''
-                    mvn clean package
+                   sudo mvn clean package
                 '''
             }
         }
