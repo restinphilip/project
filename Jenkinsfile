@@ -1,8 +1,6 @@
 pipeline {
     agent {
-           node {
-        label 'qa'
-                 }
+        label 'build'
           }
     tools {
         maven 'apache-maven-3.9.11'
@@ -29,7 +27,7 @@ pipeline {
         stage('deploy') {
             steps {
                 sh '''
-                    cp target/LoginWebApp.war /mnt/servers/apache-tomcat-10.1.48/webapps/
+                    scp -i /mkey.pem target/LoginWebApp.war ec2-user@:  /mnt/servers/apache-tomcat-10.1.48/webapps/
                 '''
             }
         }
