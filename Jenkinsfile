@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'build'
+        label any
           }
     tools {
         maven 'apache-maven-3.9.11'
@@ -24,10 +24,26 @@ pipeline {
             }
         }
 
+        stage('rds-setup') {
+            steps {
+               sh '''
+                 mkdir test
+                 unzip target/LoginWebApp.war
+                 rm -rf LoginWebApp.war
+                 rm -rf target/LoginWebApp.war
+                 old= "jdbc:mysql://localhost:3300/test", "root","root"
+                 new= "jdbc:mysql://database-1.cxgmm2giaw5y.ap-south-1.rds.amazonaws.com:3300/test" "admin","12345678"
+                 sed -i 's/old/new userRegistration.jsp
+                 zip LoginWebApp.war *
+                 cp LoginWebApp.war target/
+                '''
+            }
+        }  
+        
         stage('deploy') {
             steps {
                 sh '''
-                    scp -i /mkey.pem target/LoginWebApp.war ec2-user@:  /mnt/servers/apache-tomcat-10.1.48/webapps/
+                    cp target/LoginWebApp.war /mnt/servers/apache-tomcat-10.1.48/webapps/
                 '''
             }
         }
