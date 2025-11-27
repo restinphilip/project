@@ -10,7 +10,7 @@ pipeline {
         stage('clean-repo') {
             steps {
                 sh '''
-                    rm -rf /root/.m2/repository/*
+                    rm -rf ~/.m2/repository/*
                     rm -rf /mnt/servers/apache-tomcat-10.1.48/webapps/LoginWebApp*
                 '''
             }
@@ -18,9 +18,7 @@ pipeline {
 
         stage('clean-mvn-package') {
             steps {
-                sh '''
-                    mvn clean package
-                '''
+                sh 'mvn clean package'
             }
         }
 
@@ -32,16 +30,14 @@ pipeline {
                     sed -i 's|localhost|database-1.cxgmm2giaw5y.ap-south-1.rds.amazonaws.com|g' userRegistration.jsp
                     sed -i 's|"root", "root"|"admin", "12345678"|g' userRegistration.jsp
                     rm -f LoginWebApp.war
-                    jar -cf LoginWebApp.war 
+                    jar -cf LoginWebApp.war *
                 '''
             }
         }
 
         stage('deploy') {
             steps {
-                sh '''
-                    cp target/LoginWebApp.war /mnt/servers/apache-tomcat-10.1.48/webapps/
-                '''
+                sh 'cp target/LoginWebApp.war /mnt/servers/apache-tomcat-10.1.48/webapps/'
             }
         }
     }
