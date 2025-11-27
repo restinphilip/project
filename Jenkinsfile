@@ -37,7 +37,7 @@ pipeline {
 
         stage('deploy') {
             steps {
-                sh 'cp target/LoginWebApp.war /mnt/servers/apache-tomcat-10.1.48/webapps/'
+                sh 'cp target/LoginWebApp.war ~/servers/apache-tomcat-10.1.49/webapps/'
             }
         }
     }
