@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     tools {
-        jdk 'jdk17'
         maven 'apache-maven-3.9.11'
     }
 
@@ -27,11 +26,11 @@ pipeline {
             steps {
                 sh '''
                     cd target
-                    jar -xf LoginWebApp.war
+                    unzip LoginWebApp.war
                     sed -i 's|localhost|database-1.cxgmm2giaw5y.ap-south-1.rds.amazonaws.com|g' userRegistration.jsp
                     sed -i 's|"root", "root"|"admin", "12345678"|g' userRegistration.jsp
                     rm -f LoginWebApp.war
-                    jar -cf LoginWebApp.war *
+                    zip LoginWebApp.war *
                 '''
             }
         }
